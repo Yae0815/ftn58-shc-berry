@@ -76,3 +76,10 @@ legend(arrayfun(@(r) sprintf('t_{xy}/t_z = %.1f', r), ...
 grid on; box on;
 title(sprintf('DSM: \\eta=%.2f, t_z=%.3f eV, Nk=%d, \\eta_{broad}=%.3f eV', ...
       eta_vel, tz, Nk, eta_broad), 'Interpreter','tex');
+
+%% ===== 存圖 =====
+outname = sprintf('DSM_SHC_eta%.2f_tz%.3f_Nk%d_eta%.3f', ...
+                  eta_vel, tz, Nk, eta_broad);
+
+savefig([outname '.fig']);        % MATLAB 可再編輯
+print(gcf, [outname '.jpg'], '-djpeg', '-r300');  % 高解析度 JPEG
