@@ -1,15 +1,16 @@
-function scan_SHC_MoverTz_DSM()
+function scan_SHC_MoverTz_DSM(Nk)
 % 掃描 DSM：固定 tz，txy/tz ∈ {0.5,1.0,1.5}，M/tz ∈ [0,2]
 % 直接用 build_ftn58sparse_DSM() 回傳的 struct 進 +shc，不再跑 TBHmftn。
 
-clc; clear;
 
 %% ===== 物理常數與 SHC 設定 =====
 %hbar = 6.582119569e-16;   % eV·s
 %e    = 1.602176634e-19;   % C
 a_angstrom = 1;
 hbar = 1; e = 1;
-Nk   = 21;                % k-mesh
+if nargin < 1 || isempty(Nk)
+    Nk = 21;   % default value
+end
 eta_broad = 0.001;         % Kubo broadening (eV)
 Ef   = 0.0; mu = 0.0; T = 0;      % Fermi level/ref
 alpha = 'x';  beta = 'y';  gamma = 'z';   % σ^{s_z}_{xy}
@@ -21,7 +22,7 @@ beta4   = 0.67 * tz;
 gamma4  = 0.335 * tz;
 
 txy_over_tz_list = [0.5, 1.0, 1.5];
-M_over_tz_grid   = linspace(0.1, 2.0, 20);
+M_over_tz_grid   = linspace(0.01, 2.0, 200);
 
 Sigma = zeros(numel(txy_over_tz_list), numel(M_over_tz_grid));
 
