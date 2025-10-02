@@ -5,8 +5,10 @@ function scan_SHC_MoverTz_DSM()
 clc; clear;
 
 %% ===== 物理常數與 SHC 設定 =====
-hbar = 6.582119569e-16;   % eV·s
-e    = 1.602176634e-19;   % C
+%hbar = 6.582119569e-16;   % eV·s
+%e    = 1.602176634e-19;   % C
+a_angstrom = 1;
+hbar = 1; e = 1;
 Nk   = 21;                % k-mesh
 eta_broad = 0.001;         % Kubo broadening (eV)
 Ef   = 0.0; mu = 0.0; T = 0;      % Fermi level/ref
@@ -19,7 +21,7 @@ beta4   = 0.67 * tz;
 gamma4  = 0.335 * tz;
 
 txy_over_tz_list = [0.5, 1.0, 1.5];
-M_over_tz_grid   = linspace(0, 2.0, 11);
+M_over_tz_grid   = linspace(0.1, 2.0, 20);
 
 Sigma = zeros(numel(txy_over_tz_list), numel(M_over_tz_grid));
 
@@ -52,13 +54,18 @@ for ir = 1:numel(txy_over_tz_list)
 end
 
 %% ===== 繪圖 =====
-Sigma_plot = -1e4 * (hbar/e) * Sigma;    % 轉成 [(ħ/e)(Ω·m)^{-1}] ×10^4
+% 轉換係數：S -> 數值（圖3(b)的 y 軸數字），軸標為 [(ħ/e)(Ω·m)^-1]
+% scale = (e^2/h)/a
+e2_over_h_S = -3.874045e-5;          % Siemens
+a_meter = a_angstrom * 1e-10;       % m
+scale = e2_over_h_S / a_meter;   % (Ω·m)^-1
+Sigma_plot = scale * Sigma;    % 轉成 [(ħ/e)(Ω·m)^{-1}] ×10^4
 
 figure('Color','w'); hold on;
 for iRatio = 1:numel(txy_over_tz_list)
     plot(M_over_tz_grid, Sigma_plot(iRatio,:), 'LineWidth', 2);
 end
-xlabel('M / t_z','FontSize',12,'Interpreter','latex');
+xlabel('$\tfrac{M}{t_z}$','FontSize',12,'Interpreter','latex');
 
 ylabel('$\sigma^{\tilde z}_{xy}\;[(\hbar/e)(\Omega\!\cdot\! m)^{-1}]\times 10^{4}$',...
        'FontSize',12,'Interpreter','latex');
