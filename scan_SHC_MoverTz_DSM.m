@@ -49,7 +49,7 @@ for ir = 1:numel(txy_over_tz_list)
         cache = shc.precompute_kgrid(params);
 
         % --- 評估 σ^{s_z}_{xy}（Kubo-Berry weighted）---
-        out = shc.eval_sigma(cache, mu, Ef, T, 'weighted');
+        out = shc.eval_sigma(cache, mu, Ef, T, 'bastin');
         Sigma(ir, im) = real(out.sigma);
     end
 end

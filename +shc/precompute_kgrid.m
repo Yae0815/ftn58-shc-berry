@@ -3,7 +3,6 @@ function cache = precompute_kgrid(params)
 % One-time preprocessing for Spin Hall (Kubo AB-BA) with N=4.
 % Stores, for each k, E, Xab, Xba, and denom matrix.
 % Changing eta/alpha/beta/gamma/Nk/shift/ftn requires re-precompute.
-
     % ---- unpack ----
     ftn   = params.ftn58;
     Nk    = params.Nk;
